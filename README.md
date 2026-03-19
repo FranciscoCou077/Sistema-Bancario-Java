@@ -34,6 +34,13 @@ Para garantizar la integridad y eficiencia de los datos, el modelo de negocio im
 - **Control de Versiones:** Git & GitHub
 - **Documentación Técnica:** Javadoc y LaTeX
 
+## 👥 Equipo de Desarrollo
+
+Proyecto desarrollado para la asignatura de Programación Orientada a Objetos de la Facultad de Ingeniería (UNAM).
+
+* **Francisco José Coutiño Morales** - *Arquitectura Core y Lógica Transaccional* - [Mi GitHub](https://github.com/FranciscoCou077)
+* **[Nombre de tu compañero 2]** - *Implementación de Inversiones, Fechas y Documentación* - [Su GitHub o LinkedIn]
+* **[Nombre de tu compañero 3]** - *Controlador MVC, Interfaz GUI y Módulo de Crédito* - [Su GitHub o LinkedIn]
 ## Instalación y Uso (Para Desarrolladores)
 
 1. Clonar este repositorio en tu máquina local:
