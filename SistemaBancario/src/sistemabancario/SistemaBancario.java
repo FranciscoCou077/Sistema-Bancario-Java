@@ -13,13 +13,13 @@ import java.util.Scanner;
 public class SistemaBancario {
 
    public static void main(String[] args) {
-        // 1. Instanciamos el "Cerebro" del banco
+        // Instanciamos el "Cerebro" del banco
         GestorBanco miBanco = new GestorBanco();
         Scanner sn = new Scanner(System.in);
         
         System.out.println("--- BIENVENIDO AL SISTEMA BANCARIO UNAM (FI) ---");
         
-        // 2. Registro de prueba para que tus compañeros vean algo al iniciar
+        // Registro de prueba para que tus compañeros vean algo al iniciar
         Cliente clientePrueba = new Cliente("425121623", "Francisco Coutiño");
         miBanco.registrarCliente(clientePrueba);
         

@@ -25,12 +25,12 @@ private String numCliente;
     public Cliente(String numCliente, String nombre) {
         this.numCliente = numCliente;
         this.nombre = nombre;
-        // Es vital inicializar las colecciones para evitar errores NullPointerException
+        // Iniciaslizo las colecciones para evitar errores NullPointerException
         this.cuentasBasicas = new HashSet<>();
         this.cuentasInversion = new HashSet<>();
     }
 
-    // Métodos del UML
+    // Métodos del programa correspondientes del diseño del UML 
     public void modificarDatos(String nuevoNombre) {
         this.nombre = nuevoNombre;
     }

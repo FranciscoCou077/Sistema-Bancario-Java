@@ -21,7 +21,7 @@ public class CuentaInversion {
     private LocalDate fechaInicio;
     private LocalDate fechaVencimiento;
     
-    // Al igual que la básica, usamos List para su propio historial
+    // Usamos List para su propio historial como en la cuenta basica
     private List<Movimiento> historial;
 
     // Constructor
