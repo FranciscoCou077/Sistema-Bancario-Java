@@ -17,7 +17,7 @@ public class SistemaBancario {
         GestorBanco miBanco = new GestorBanco();
         Scanner sn = new Scanner(System.in);
         
-        System.out.println("--- BIENVENIDO AL SISTEMA BANCARIO UNAM (FI) ---");
+        System.out.println(" BIENVENIDO AL SISTEMA BANCARIO El BIENESTAR ");
         
        
         Cliente clientePrueba = new Cliente("425121623", "Francisco Coutiño");
@@ -25,7 +25,7 @@ public class SistemaBancario {
         
         boolean salir = false;
         while (!salir) {
-            System.out.println("\n--- MENÚ DE CAJERO ---");
+            System.out.println("\n MENÚ DE CAJERO ");
             System.out.println("1. Registrar Nuevo Cliente");
             System.out.println("2. Buscar Cliente por ID");
             System.out.println("3. Salir");
