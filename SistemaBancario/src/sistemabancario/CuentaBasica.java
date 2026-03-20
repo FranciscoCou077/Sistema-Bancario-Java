@@ -7,6 +7,8 @@ package sistemabancario;
 /**
  *
  * @author Francisco
+ * @author Ernesto
+ * @author Jaime
  */
 
 import java.util.ArrayList;

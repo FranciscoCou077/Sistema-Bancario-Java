@@ -6,6 +6,8 @@
 /**
  *
  * @author Francisco
+ * @author Ernesto
+ * @author Jaime
  */
 package sistemabancario;
 

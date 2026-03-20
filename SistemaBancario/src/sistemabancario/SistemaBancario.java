@@ -9,6 +9,8 @@ import java.util.Scanner;
 /**
  *
  * @author Francisco
+ * @author Ernesto
+ * @author Jaime
  */
 public class SistemaBancario {
 
