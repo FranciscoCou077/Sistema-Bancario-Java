@@ -19,7 +19,7 @@ public class SistemaBancario {
         
         System.out.println("--- BIENVENIDO AL SISTEMA BANCARIO UNAM (FI) ---");
         
-        // Registro de prueba para que tus compañeros vean algo al iniciar
+       
         Cliente clientePrueba = new Cliente("425121623", "Francisco Coutiño");
         miBanco.registrarCliente(clientePrueba);
         
