@@ -67,7 +67,7 @@ public class SistemaBancario {
                     salir = true;
                     System.out.println("Cerrando sesión del cajero...");
                     break;
-            }
+            } 
         }
     }
 }
