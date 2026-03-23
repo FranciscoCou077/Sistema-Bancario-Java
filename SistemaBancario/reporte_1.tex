@@ -1,0 +1,215 @@
+\documentclass[12pt, letterpaper]{article}
+
+% --- PAQUETES DE IDIOMA Y FORMATO ---
+\usepackage[utf8]{inputenc}
+\usepackage[spanish]{babel}
+\usepackage[margin=2.5cm]{geometry}
+\usepackage{graphicx} 
+\usepackage{hyperref} 
+\usepackage{xcolor}   
+\usepackage{listings}
+\usepackage{booktabs} % Para tablas más profesionales
+
+% --- CONFIGURACIÓN PARA EL CÓDIGO JAVA ---
+\definecolor{codegreen}{rgb}{0,0.6,0}
+\definecolor{codegray}{rgb}{0.5,0.5,0.5}
+\definecolor{codepurple}{rgb}{0.58,0,0.82}
+\definecolor{backcolour}{rgb}{0.95,0.95,0.92}
+
+\lstdefinestyle{mystyle}{
+	backgroundcolor=\color{backcolour},   
+	commentstyle=\color{codegreen},
+	keywordstyle=\color{magenta},
+	numberstyle=\tiny\color{codegray},
+	stringstyle=\color{codepurple},
+	basicstyle=\ttfamily\footnotesize,
+	breakatwhitespace=false,         
+	breaklines=true,                 
+	captionpos=b,                    
+	keepspaces=true,                 
+	numbers=left,                    
+	numbersep=5pt,                  
+	showspaces=false,                
+	showstringspaces=false,
+	showtabs=false,                  
+	tabsize=2
+}
+\lstset{style=mystyle}
+
+% --- INICIO DEL DOCUMENTO ---
+\begin{document}
+	
+	% --- PORTADA ---
+	\begin{titlepage}
+		\centering
+		\vspace*{0.5cm}
+		
+		\includegraphics[width=2.8cm]{logo_unam.png} 
+		\hfill
+		\includegraphics[width=2.8cm]{logo_fi.png} 
+		\\[1.5cm]
+		
+		{\Huge \textbf{Universidad Nacional Autónoma de México}}\\[0.5cm]
+		{\LARGE \textbf{Facultad de Ingeniería}}\\[1.5cm]
+		
+		{\Large Asignatura: Programación Orientada a Objetos}\\[0.5cm]
+		{\Large Proyecto: Sistema Bancario en Java}\\[1.5cm]
+		
+		{\LARGE \textbf{Tarea de Investigación y Reporte Técnico - Versión 1}}\\[2cm]
+		
+		\begin{flushleft}
+			\Large \textbf{Equipo de Desarrollo:}\\
+			\vspace{0.3cm}
+			\normalsize
+			$\bullet$ Francisco José Coutiño Morales (Núm. Cta: 425121623)\\ 
+			$\bullet$ Ernesto Flamenco Villaseñor (Núm. Cta: 319170599)\\
+			$\bullet$ Jaime Erick Torres Nava (Núm. Cta: 322289976)\\
+		\end{flushleft}
+		
+		\vfill
+		{\large Marzo 2026}\\[1cm]
+	\end{titlepage}
+	
+	% --- ÍNDICE ---
+	\newpage
+	\tableofcontents
+	\newpage
+	
+	% =========================================================================
+	% --- SECCIÓN 1: INTRODUCCIÓN ---
+	% =========================================================================
+	\section{Introducción}
+	El presente documento tiene un doble propósito: presentar una investigación teórica sobre el \textit{Java Collections Framework} y describir la arquitectura transaccional implementada para la primera versión de nuestro Sistema Bancario. El objetivo principal de esta fase fue modelar las entidades básicas del dominio bancario asegurando la integridad de los datos mediante las estructuras de datos nativas de Java.
+	
+	% =========================================================================
+	% --- SECCIÓN 2: MARCO TEÓRICO (INVESTIGACIÓN EXPANDIDA) ---
+	% =========================================================================
+	\section{Marco Teórico: Jerarquía de Colecciones en Java}
+	
+	El Java Collections Framework es una arquitectura para almacenar y manipular grupos de objetos de forma eficiente. Más allá de ser simples contenedores, estas estructuras están optimizadas a nivel de memoria y algoritmos de búsqueda. La jerarquía se divide principalmente en dos ramas: 
+	\begin{itemize}
+		\item \textbf{Interfaz Collection:} De ella heredan las interfaces List y Set.
+		\item \textbf{Interfaz Map:} Aunque no hereda directamente de Collection, forma parte esencial del framework al manejar pares clave-valor.
+	\end{itemize}
+	
+	\subsection{Clases Implementadas y Análisis de Complejidad}
+	
+	\subsubsection{Listas (List)}
+	Permiten elementos duplicados y mantienen un orden específico basado en la inserción. Clases que la implementan: \texttt{ArrayList} y \texttt{LinkedList}. 
+	A nivel interno, un \texttt{ArrayList} utiliza un arreglo dinámico que se redimensiona automáticamente, lo que permite un acceso a los datos en tiempo constante O(1). Por otro lado, \texttt{LinkedList} utiliza una estructura de nodos doblemente enlazados, optimizando las inserciones en los extremos. Sus principales métodos son:
+	\begin{itemize}
+		\item \texttt{add(E element)}: Agrega un elemento al final.
+		\item \texttt{get(int index)}: Obtiene el elemento en una posición específica.
+		\item \texttt{remove(int index)}: Elimina el elemento en la posición dada.
+		\item \texttt{size()}: Retorna el número total de elementos.
+	\end{itemize}
+	
+	\subsubsection{Conjuntos (Set)}
+	Estructuras que prohíben la existencia de elementos duplicados. Clases que la implementan: \texttt{HashSet} (rápido, sin orden) y \texttt{TreeSet} (mantiene orden alfabético o numérico). 
+	Internamente, un \texttt{HashSet} está respaldado por una tabla hash, ofreciendo operaciones matemáticas de conjuntos con gran rendimiento. Sus principales métodos son:
+	\begin{itemize}
+		\item \texttt{add(E e)}: Solo añade el objeto si no está ya presente.
+		\item \texttt{contains(Object o)}: Verifica si un elemento existe en el conjunto.
+		\item \texttt{isEmpty()}: Indica si el conjunto está vacío.
+		\item \texttt{clear()}: Elimina todos los elementos.
+	\end{itemize}
+	
+	\subsubsection{Tablas Hash (Map)}
+	Almacenan información mediante una relación de "Clave-Valor", donde cada clave debe ser única. Clases que la implementan: \texttt{HashMap} y \texttt{TreeMap}.
+	Al utilizar funciones de \textit{hashing}, mapean las llaves a "cubetas" (buckets) en memoria, permitiendo búsquedas virtualmente instantáneas de complejidad O(1). Sus principales métodos son:
+	\begin{itemize}
+		\item \texttt{put(K key, V value)}: Guarda un valor asociado a una clave única.
+		\item \texttt{get(Object key)}: Recupera el valor a través de su clave.
+		\item \texttt{containsKey(Object key)}: Revisa si una clave ya está registrada.
+		\item \texttt{values()}: Devuelve una colección de todos los valores guardados.
+	\end{itemize}
+	
+	\subsection{Tabla Comparativa de Estructuras}
+	A continuación, se resumen las principales diferencias operativas de las interfaces:
+	
+	\begin{table}[h]
+		\centering
+		\begin{tabular}{@{}llll@{}}
+			\toprule
+			\textbf{Estructura} & \textbf{¿Permite Duplicados?} & \textbf{¿Mantiene Orden?} & \textbf{Acceso a Datos} \\ \midrule
+			List & Sí & Sí (por inserción) & Por índice (0, 1, 2...) \\
+			Set & No & No (generalmente) & Por iteración o búsqueda \\
+			Map & Solo en los valores & No & Por clave única \\ \bottomrule
+		\end{tabular}
+		\caption{Diferencias entre List, Set y Map.}
+	\end{table}
+	
+	\subsection{Criterios de Solución: Elección de la Colección}
+	Para elegir la herramienta correcta al resolver un problema de programación, se deben considerar los siguientes puntos:
+	\begin{enumerate}
+		\item \textbf{Naturaleza de los datos:} Si necesitas un historial donde el orden de llegada importa, usa una Lista. Si los datos son únicos (como una lista de correos electrónicos), usa un conjunto.
+		\item \textbf{Necesidad de búsqueda:} Si vas a buscar elementos constantemente mediante un identificador (como buscar un cliente por su RFC), la Tabla Hash (Map) es la opción más rápida.
+		\item \textbf{Frecuencia de cambios:} Usa \texttt{ArrayList} si vas a leer datos frecuentemente. Usa \texttt{LinkedList} si vas a estar insertando o eliminando elementos en medio de la lista constantemente.
+		\item \textbf{Ordenamiento:} Si el problema exige que los datos estén siempre ordenados alfabéticamente mientras se agregan, se debe optar por versiones "Tree" (\texttt{TreeSet} o \texttt{TreeMap}).
+	\end{enumerate}
+	
+	
+	% =========================================================================
+	% --- SECCIÓN 3: IMPLEMENTACIÓN PRÁCTICA EN EL PROYECTO ---
+	% =========================================================================
+	\section{Arquitectura del Modelo de Datos (Aplicación)}
+	Basados en la investigación teórica previa, el sistema se construyó utilizando los principios de la Programación Orientada a Objetos (POO). Se diseñaron clases principales para representar la interacción entre los usuarios y sus activos.
+	
+	\subsection{Clase Cliente}
+	Representa a los usuarios del banco. Cada cliente cuenta con un identificador único y actúa como contenedor de sus propias cuentas.
+	
+	\subsection{Clases de Cuentas}
+	Se definieron dos tipos principales de cuentas:
+	\begin{itemize}
+		\item \textbf{Cuenta Básica:} Orientada a depósitos y retiros regulares.
+		\item \textbf{Cuenta de Inversión:} Implementa lógica de cálculo de retornos basada en plazos y tasas de rendimiento, utilizando \texttt{java.time.LocalDate} para proyectar vencimientos.
+	\end{itemize}
+	
+	\section{Implementación de Colecciones en el Sistema Bancario}
+	Para optimizar el rendimiento de la aplicación en memoria y cumplir con las reglas de negocio, se aplicaron los criterios de selección investigados:
+	
+	\subsection{Uso de List (Historial de Movimientos)}
+	Se implementó un \texttt{ArrayList} dentro de las cuentas para registrar los objetos \texttt{Movimiento}. Se eligió esta colección porque permite preservar el orden cronológico exacto de las transacciones.
+	
+	\subsection{Uso de Set (Cuentas del Cliente)}
+	Se utilizó un \texttt{HashSet} en la clase \texttt{Cliente} para almacenar sus cuentas. Esto garantiza la regla de negocio que prohíbe la duplicidad de productos financieros bajo un mismo titular.
+	
+	\subsection{Uso de Map (Gestor del Banco)}
+	En la clase \texttt{GestorBanco}, se implementó un \texttt{HashMap} donde la llave es el número de cliente (\texttt{String}) y el valor es el objeto \texttt{Cliente}. Esto permite encontrar cualquier perfil de manera instantánea O(1).
+	
+	\section{Anexo: Fragmento de Código Clase de la Versión 1}
+	A continuación se muestra cómo se implementó el mapa en el gestor para la búsqueda eficiente de clientes:
+	
+	\begin{lstlisting}[language=Java, caption=Búsqueda Eficiente en GestorBanco]
+		public class GestorBanco {
+			// La llave es String (el numero de cliente actual)
+			private Map<String, Cliente> directorioClientes;
+			
+			public GestorBanco() {
+				this.directorioClientes = new HashMap<>();
+			}
+			
+			public Cliente buscarCliente(String numCliente) {
+				return directorioClientes.get(numCliente); 
+			}
+		}
+	\end{lstlisting}
+	
+	\newpage
+	\section{Mejoras Arquitecturales Planificadas (Hacia la Versión 2)}
+	Tras el análisis de la Versión 1, el equipo ha definido los siguientes objetivos de reestructuración del código Java:
+	
+	\subsection{Automatización y Tipo de Dato de Identificadores}
+	En la versión actual, el número de cuenta es introducido manualmente como una cadena de texto (\texttt{String}). Para la Versión 2:
+	\begin{itemize}
+		\item \textbf{Restricción Numérica:} El atributo \texttt{numCuenta} cambiará a tipo primitivo entero (\texttt{int}), garantizando de manera nativa que el sistema rechace caracteres alfabéticos.
+		\item \textbf{Generación Automática:} Se implementará un módulo de generación aleatoria en el \texttt{GestorBanco}. Al registrar un cliente, el sistema asignará automáticamente un ID único.
+	\end{itemize}
+	
+	\subsection{Módulo de Auditoría Global de Movimientos}
+	Para la Versión 2, se desarrollará un método administrativo en \texttt{GestorBanco} que permitirá iterar a través de todos los clientes y agregar el historial cronológico total de transacciones financieras institucionales.
+	
+	\section{Conclusiones}
+	La investigación profunda del \textit{Collections Framework} permitió elegir las estructuras de datos óptimas para el sistema bancario. La Versión 1 cumple exitosamente con los requisitos de encapsulamiento y asignación de estructuras. Los cambios planificados hacia la Versión 2 fortalecerán aún más la integridad del modelo financiero.
+	
+\end{document}
