@@ -15,48 +15,107 @@ import java.util.HashSet;
 import java.util.Set;
 
 public class Cliente {
-private String numCliente;
+    private int numCliente; 
     private String nombre;
     
-    // Aplicamos Set como pide el proyecto para evitar cuentas duplicadas
-    private Set<CuentaBasica> cuentasBasicas;
-    private Set<CuentaInversion> cuentasInversion;
-    // private TarjetaCredito tarjeta; // Comentado por ahora, es para los puntos extra
+    // Las tres colecciones separadas para cada tipo de producto
+    private Set<CuentaBasica> cuentas; 
+    private Set<CuentaInversion> inversiones; 
+    private Set<TarjetaCredito> tarjetas; 
 
-    // Constructor
-    public Cliente(String numCliente, String nombre) {
+    public Cliente(int numCliente, String nombre) {
         this.numCliente = numCliente;
         this.nombre = nombre;
-        // Iniciaslizo las colecciones para evitar errores NullPointerException
-        this.cuentasBasicas = new HashSet<>();
-        this.cuentasInversion = new HashSet<>();
+        // Inicializamos las tres colecciones vacías al crear al cliente
+        this.cuentas = new HashSet<>();
+        this.inversiones = new HashSet<>();
+        this.tarjetas = new HashSet<>();
     }
 
-    // Métodos del programa correspondientes del diseño del UML 
-    public void modificarDatos(String nuevoNombre) {
-        this.nombre = nuevoNombre;
+    // --- GETTERS BÁSICOS ---
+    public int getNumCliente() { return numCliente; }
+    public String getNombre() { return nombre; }
+
+    // --- MÉTODOS PARA CUENTAS BÁSICAS ---
+    public void agregarCuenta(CuentaBasica nuevaCuenta) {
+        cuentas.add(nuevaCuenta);
     }
 
-    public double obtenerSaldoTotal() {
-        double total = 0.0;
-        // Aquí iteraremos sobre las cuentas para sumar el saldo más adelante
-        return total;
+    public CuentaBasica buscarCuenta(int numCuentaBuscar) {
+        for (CuentaBasica cuenta : cuentas) {
+            if (cuenta.getNumCuenta() == numCuentaBuscar) {
+                return cuenta; 
+            }
+        }
+        return null; 
     }
 
-    // Getters
-    public String getNumCliente() {
-        return numCliente;
+    public boolean tieneCuentaBasica() {
+        return !cuentas.isEmpty();
     }
 
-    public String getNombre() {
-        return nombre;
+    // --- MÉTODOS PARA CUENTAS DE INVERSIÓN ---
+    public void agregarInversion(CuentaInversion nuevaInversion) {
+        inversiones.add(nuevaInversion);
     }
 
-    public Set<CuentaBasica> getCuentasBasicas() {
-        return cuentasBasicas;
+    public CuentaInversion buscarInversion(int numCuentaBuscar) {
+        for (CuentaInversion inv : inversiones) {
+            if (inv.getNumCuenta() == numCuentaBuscar) {
+                return inv;
+            }
+        }
+        return null; 
     }
 
-    public Set<CuentaInversion> getCuentasInversion() {
-        return cuentasInversion;
+    public void eliminarInversion(CuentaInversion inversionTerminada) {
+        inversiones.remove(inversionTerminada);
     }
+
+    // --- MÉTODOS PARA TARJETAS DE CRÉDITO ---
+    public void agregarTarjeta(TarjetaCredito nuevaTarjeta) {
+        tarjetas.add(nuevaTarjeta);
+    }
+
+    public TarjetaCredito buscarTarjeta(int numTarjetaBuscar) {
+        for (TarjetaCredito tdc : tarjetas) {
+            if (tdc.getNumTarjeta() == numTarjetaBuscar) {
+                return tdc;
+            }
+        }
+        return null;
+    }
+
+    // --- MÉTODO PARA IMPRIMIR TODOS LOS PRODUCTOS ---
+    public void mostrarCuentas() {
+        System.out.println("\n--- PRODUCTOS DE " + nombre.toUpperCase() + " ---");
+        
+        if (cuentas.isEmpty() && inversiones.isEmpty() && tarjetas.isEmpty()) {
+            System.out.println("El cliente no tiene productos contratados.");
+            return; // Termina la función aquí si no hay nada que mostrar
+        }
+
+        if (!cuentas.isEmpty()) {
+            System.out.println("CUENTAS BÁSICAS:");
+            for (CuentaBasica cuenta : cuentas) {
+                System.out.println(" -> No. " + cuenta.getNumCuenta() + " | Saldo: $" + cuenta.getSaldo());
+            }
+        }
+
+        if (!inversiones.isEmpty()) {
+            System.out.println("\nCUENTAS DE INVERSIÓN:");
+            for (CuentaInversion inv : inversiones) {
+                System.out.println(" -> No. " + inv.getNumCuenta() + " | Capital: $" + inv.getCapitalInvertido() + " a " + inv.getPlazoDias() + " días.");
+            }
+        }
+
+        if (!tarjetas.isEmpty()) {
+            System.out.println("\nTARJETAS DE CRÉDITO:");
+            for (TarjetaCredito tdc : tarjetas) {
+                System.out.println(" -> No. " + tdc.getNumTarjeta() + " | Deuda: $" + tdc.getDeudaActual() + " / Límite: $" + tdc.getLimiteCredito());
+            }
+        }
+        System.out.println("-----------------------------------");
+    }
+    
 }

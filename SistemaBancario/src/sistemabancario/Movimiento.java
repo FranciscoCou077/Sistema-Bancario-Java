@@ -15,35 +15,20 @@ import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 
 public class Movimiento {
-    private LocalDateTime fechaHora;
-    private String tipo; // Ejemplo: "Depósito", "Retiro", "Apertura Inversión"
+    private String tipo; // "Depósito" o "Retiro"
     private double monto;
+    private LocalDateTime fechaHora; // Guarda la fecha y hora exacta del sistema
 
-    // Constructor
     public Movimiento(String tipo, double monto) {
-        // Guarda el momento exacto de la transacción automáticamente
-        this.fechaHora = LocalDateTime.now(); 
         this.tipo = tipo;
         this.monto = monto;
+        this.fechaHora = LocalDateTime.now(); // Captura el momento exacto en que se crea
     }
 
-    // Getters
-    public LocalDateTime getFechaHora() {
-        return fechaHora;
-    }
-
-    public String getTipo() {
-        return tipo;
-    }
-
-    public double getMonto() {
-        return monto;
-    }
-
-    // Este método formatea el movimiento para que se vea bonito al imprimirlo
+    // Este método le da un formato bonito y legible al movimiento cuando lo imprimamos
     @Override
     public String toString() {
         DateTimeFormatter formato = DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm:ss");
-        return fechaHora.format(formato) + " | " + tipo + " | $" + String.format("%.2f", monto);
+        return "[" + fechaHora.format(formato) + "] " + tipo + ": $" + monto;
     }
 }
