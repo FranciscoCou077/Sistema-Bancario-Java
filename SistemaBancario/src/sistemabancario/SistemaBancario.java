@@ -12,6 +12,7 @@ import java.util.Scanner;
  * @author Ernesto
  * @author Jaime
  */
+
 public class SistemaBancario {
 
     public static void main(String[] args) {
@@ -77,25 +78,37 @@ public class SistemaBancario {
                     if (tipoProd == 1) {
                         miBanco.abrirCuentaACliente(idParaCuenta);
                     } else if (tipoProd == 2) {
-                        System.out.println("\n--- TASAS DE INVERSIÓN DISPONIBLES ---");
-                        System.out.println("- 28 días  -> 10.96% Anual");
-                        System.out.println("- 91 días  -> 11.40% Anual");
-                        System.out.println("- 182 días -> 12.07% Anual");
-                        System.out.print("¿A cuántos días deseas invertir? (28/91/182): ");
-                        int diasInv = sn.nextInt();
+                        // AQUÍ ESTÁ LA LÓGICA CORREGIDA PARA RESTAR LOS FONDOS
+                        Cliente clienteInv = miBanco.buscarCliente(idParaCuenta);
                         
-                        System.out.print("¿Qué cantidad deseas invertir? (Mínimo $100): $");
-                        double montoInv = sn.nextDouble();
-                        sn.nextLine();
-                        
-                        miBanco.abrirCuentaInversionACliente(idParaCuenta, montoInv, diasInv);
+                        if (clienteInv != null && clienteInv.tieneCuentaBasica()) {
+                            clienteInv.mostrarCuentas(); 
+                            
+                            System.out.print("\nIngrese el Número de la CUENTA BÁSICA de donde se tomará el dinero: ");
+                            int cuentaOrigen = sn.nextInt();
+                            
+                            System.out.println("\n--- TASAS DE INVERSIÓN DISPONIBLES ---");
+                            System.out.println("- 28 días  -> 10.96% Anual");
+                            System.out.println("- 91 días  -> 11.40% Anual");
+                            System.out.println("- 182 días -> 12.07% Anual");
+                            System.out.print("¿A cuántos días deseas invertir? (28/91/182): ");
+                            int diasInv = sn.nextInt();
+                            
+                            System.out.print("¿Qué cantidad deseas invertir? (Mínimo $100): $");
+                            double montoInv = sn.nextDouble();
+                            sn.nextLine(); 
+                            
+                            miBanco.abrirCuentaInversionACliente(idParaCuenta, cuentaOrigen, montoInv, diasInv);
+                        } else {
+                            System.out.println(" POLÍTICA DEL BANCO: El cliente debe tener primero al menos una Cuenta Básica para fondear la inversión.");
+                        }
                     } else if (tipoProd == 3) {
                         System.out.print("¿Qué límite de crédito autorizará el banco? (Mínimo $1000): $");
                         double limite = sn.nextDouble();
                         sn.nextLine();
                         miBanco.abrirTarjetaCreditoACliente(idParaCuenta, limite);
                     } else {
-                        System.out.println("⚠️ Opción no válida. Operación cancelada.");
+                        System.out.println("️ Opción no válida. Operación cancelada.");
                     }
                     break;
 
@@ -113,7 +126,7 @@ public class SistemaBancario {
                         sn.nextLine(); 
                         miBanco.realizarDeposito(idDep, cuentaDep, montoDep);
                     } else {
-                        System.out.println("⚠️ Error: Cliente no encontrado.");
+                        System.out.println("️ Error: Cliente no encontrado.");
                     }
                     break;
 
@@ -147,7 +160,7 @@ public class SistemaBancario {
                         sn.nextLine(); 
                         miBanco.verEstadoCuenta(idEst, cuentaEst);
                     } else {
-                        System.out.println("⚠️ Error: Cliente no encontrado.");
+                        System.out.println("️ Error: Cliente no encontrado.");
                     }
                     break;
 
@@ -166,7 +179,7 @@ public class SistemaBancario {
                         
                         miBanco.liquidarInversion(idLiq, cuentaInvLiq, cuentaBasicaDestino);
                     } else {
-                        System.out.println("⚠️ Error: Cliente no encontrado.");
+                        System.out.println("️ Error: Cliente no encontrado.");
                     }
                     break;
                     
@@ -186,18 +199,32 @@ public class SistemaBancario {
                         System.out.print("Elige una opción (1 o 2): ");
                         int opcTdc = sn.nextInt();
                         
-                        if (opcTdc == 1 || opcTdc == 2) {
-                            System.out.print("Ingresa el monto: $");
-                            double montoTdc = sn.nextDouble();
+                        if (opcTdc == 1) {
+                            System.out.print("Ingresa el monto de la compra: $");
+                            double montoCompra = sn.nextDouble();
                             sn.nextLine(); // Limpiar buffer
+                            miBanco.registrarCompraTDC(idTdc, numTdc, montoCompra);
                             
-                            boolean esCompra = (opcTdc == 1);
-                            miBanco.usarTarjetaCredito(idTdc, numTdc, montoTdc, esCompra);
+                        } else if (opcTdc == 2) {
+                            // Verificamos que tenga una cuenta básica para poder pagar
+                            if (clienteTdc.tieneCuentaBasica()) {
+                                System.out.print("\nIngrese el Número de la CUENTA BÁSICA de donde saldrá el dinero para pagar: ");
+                                int cuentaOrigenPago = sn.nextInt();
+                                
+                                System.out.print("Ingresa el monto a pagar: $");
+                                double montoPago = sn.nextDouble();
+                                sn.nextLine(); // Limpiar buffer
+                                
+                                miBanco.pagarTarjetaCredito(idTdc, numTdc, cuentaOrigenPago, montoPago);
+                            } else {
+                                System.out.println(" POLÍTICA DEL BANCO: Necesitas abrir una Cuenta Básica y depositarle fondos para poder pagar tu tarjeta.");
+                                sn.nextLine();
+                            }
                         } else {
-                            System.out.println("⚠️ Operación inválida.");
+                            System.out.println("️ Operación inválida.");
                         }
                     } else {
-                        System.out.println("⚠️ Error: Cliente no encontrado.");
+                        System.out.println("️ Error: Cliente no encontrado.");
                     }
                     break;
 

@@ -38,9 +38,9 @@ public class CuentaBasica {
             saldo += cantidad;
             // 2. Guardamos el movimiento al principio de la lista (LIFO)
             historialMovimientos.addFirst(new Movimiento("Depósito", cantidad));
-            System.out.println("✅ Depósito exitoso. Se agregaron $" + cantidad + " a la cuenta " + numCuenta);
+            System.out.println(" Depósito exitoso. Se agregaron $" + cantidad + " a la cuenta " + numCuenta);
         } else {
-            System.out.println("⚠️ Error: La cantidad a depositar debe ser mayor a cero.");
+            System.out.println("️ Error: La cantidad a depositar debe ser mayor a cero.");
         }
     }
 
@@ -49,13 +49,13 @@ public class CuentaBasica {
             saldo -= cantidad;
             // 3. Guardamos el retiro al principio de la lista
             historialMovimientos.addFirst(new Movimiento("Retiro", cantidad));
-            System.out.println("✅ Retiro exitoso. Se retiraron $" + cantidad + " de la cuenta " + numCuenta);
+            System.out.println(" Retiro exitoso. Se retiraron $" + cantidad + " de la cuenta " + numCuenta);
             return true; 
         } else if (cantidad <= 0) {
-            System.out.println("⚠️ Error: La cantidad a retirar debe ser mayor a cero.");
+            System.out.println("️ Error: La cantidad a retirar debe ser mayor a cero.");
             return false;
         } else {
-            System.out.println("❌ Fondos insuficientes. Tu saldo actual es de $" + saldo);
+            System.out.println(" Fondos insuficientes. Tu saldo actual es de $" + saldo);
             return false; 
         }
     }

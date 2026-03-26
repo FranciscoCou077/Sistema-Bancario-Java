@@ -128,30 +128,43 @@ public class GestorBanco {
             System.out.println("️ Error: No se encontró ningún cliente con ese ID.");
         }
     }
-   // Método para abrir Inversión con validación de cuenta básica, monto y plazo
-    public void abrirCuentaInversionACliente(int numCliente, double monto, int plazo) {
+   // Método actualizado: Ahora resta el dinero de la cuenta básica primero
+    public void abrirCuentaInversionACliente(int numCliente, int numCuentaOrigen, double monto, int plazo) {
         Cliente cliente = buscarCliente(numCliente);
         
         if (cliente != null) {
-            // REGLA DE NEGOCIO: Validar que el cliente tenga primero una cuenta básica
-            if (cliente.tieneCuentaBasica()) {
-                if (monto >= 100.0) {
-                    if (plazo == 28 || plazo == 91 || plazo == 182) {
-                        CuentaInversion nuevaInversion = new CuentaInversion(monto, plazo);
-                        cliente.agregarInversion(nuevaInversion);
+            if (monto >= 100.0) {
+                if (plazo == 28 || plazo == 91 || plazo == 182) {
+                    
+                    // 1. Buscamos la cuenta básica de donde va a salir el dinero
+                    CuentaBasica cuentaOrigen = cliente.buscarCuenta(numCuentaOrigen);
+                    
+                    if (cuentaOrigen != null) {
+                        System.out.println("\nProcesando transferencia de fondos para la inversión...");
                         
-                        System.out.println("\n CONTRATO DE INVERSIÓN CREADO EXITOSAMENTE");
-                        System.out.println("-> Número asignado: " + nuevaInversion.getNumCuenta());
-                        nuevaInversion.calcularProyeccion(); 
+                        // 2. Intentamos retirar el dinero. Si regresa 'true', es que sí tenía saldo
+                        if (cuentaOrigen.retirar(monto)) {
+                            
+                            // 3. Como ya le cobramos, ahora sí creamos su inversión
+                            CuentaInversion nuevaInversion = new CuentaInversion(monto, plazo);
+                            cliente.agregarInversion(nuevaInversion);
+                            
+                            System.out.println("\n CONTRATO DE INVERSIÓN CREADO EXITOSAMENTE");
+                            System.out.println("-> Número asignado: " + nuevaInversion.getNumCuenta());
+                            nuevaInversion.calcularProyeccion();
+                            
+                        } else {
+                            // Si retirar() regresó false, el mismo método ya imprimió "Fondos insuficientes"
+                            System.out.println(" Operación cancelada: No pudimos crear la inversión.");
+                        }
                     } else {
-                        System.out.println("️ Error: Plazo no válido. Solo se admiten 28, 91 o 182 días.");
+                        System.out.println("️ Error: La Cuenta Básica origen no existe o no te pertenece.");
                     }
                 } else {
-                    System.out.println("️ Error: El monto mínimo de inversión es de $100.00 MXN.");
+                    System.out.println("️ Error: Plazo no válido. Solo se admiten 28, 91 o 182 días.");
                 }
             } else {
-                // Si entra aquí, es porque su Set de cuentas básicas está vacío
-                System.out.println(" POLÍTICA DEL BANCO: Para abrir una inversión, el cliente debe tener primero al menos una Cuenta Básica.");
+                System.out.println("️ Error: El monto mínimo de inversión es de $100.00 MXN.");
             }
         } else {
             System.out.println("\n️ Error: No se encontró ningún cliente con el ID " + numCliente);
@@ -206,15 +219,42 @@ public class GestorBanco {
         }
     }
 
-    public void usarTarjetaCredito(int idCliente, int numTarjeta, double monto, boolean esCompra) {
+   // Método exclusivo para registrar compras con crédito
+    public void registrarCompraTDC(int idCliente, int numTarjeta, double monto) {
         Cliente cliente = buscarCliente(idCliente);
         if (cliente != null) {
             TarjetaCredito tdc = cliente.buscarTarjeta(numTarjeta);
             if (tdc != null) {
-                if (esCompra) {
-                    tdc.realizarCompra(monto);
+                tdc.realizarCompra(monto); // Aumenta la deuda
+            } else {
+                System.out.println("️ Error: La tarjeta " + numTarjeta + " no existe o no pertenece a este cliente.");
+            }
+        } else {
+            System.out.println("️ Error: Cliente no encontrado.");
+        }
+    }
+
+    // Método exclusivo para pagar la deuda sacando dinero de la cuenta básica
+    public void pagarTarjetaCredito(int idCliente, int numTarjeta, int numCuentaOrigen, double monto) {
+        Cliente cliente = buscarCliente(idCliente);
+        if (cliente != null) {
+            TarjetaCredito tdc = cliente.buscarTarjeta(numTarjeta);
+            if (tdc != null) {
+                CuentaBasica cuentaOrigen = cliente.buscarCuenta(numCuentaOrigen);
+                if (cuentaOrigen != null) {
+                    
+                    System.out.println("\nProcesando el pago desde tu cuenta básica...");
+                    // Intentamos retirar el dinero de la cuenta básica primero
+                    if (cuentaOrigen.retirar(monto)) {
+                        // Si se pudo retirar (había saldo), ahora sí pagamos la tarjeta
+                        tdc.abonarDeuda(monto);
+                        System.out.println(" El pago de la tarjeta se fondeó correctamente desde la cuenta " + numCuentaOrigen);
+                    } else {
+                        System.out.println(" Operación cancelada: No se pudo realizar el pago de la tarjeta por fondos insuficientes.");
+                    }
+                    
                 } else {
-                    tdc.abonarDeuda(monto);
+                    System.out.println("️ Error: La Cuenta Básica origen no existe o no te pertenece.");
                 }
             } else {
                 System.out.println("️ Error: La tarjeta " + numTarjeta + " no existe o no pertenece a este cliente.");
