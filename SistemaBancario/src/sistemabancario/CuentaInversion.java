@@ -22,7 +22,7 @@ public class CuentaInversion {
 
     public CuentaInversion(double montoInicial, int plazoDias) {
         Random generador = new Random();
-        // Le damos un rango diferente (ej. 500000+) para distinguirlas visualmente de las básicas
+        // Le damos un rango diferente para distinguirlas visualmente de las cuentas básicas
         this.numCuenta = 500000 + generador.nextInt(400000); 
         this.capitalInvertido = montoInicial;
         this.plazoDias = plazoDias;

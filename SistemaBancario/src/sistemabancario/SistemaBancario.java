@@ -19,7 +19,7 @@ public class SistemaBancario {
         GestorBanco miBanco = new GestorBanco();
         Scanner sn = new Scanner(System.in);
 
-        System.out.println(" BIENVENIDO AL SISTEMA BANCARIO EL BIENESTAR ");
+        System.out.println(" BIENVENIDO AL SISTEMA BANCARIO ");
 
         boolean salir = false;
         while (!salir) {
@@ -52,9 +52,9 @@ public class SistemaBancario {
                     sn.nextLine(); 
                     Cliente encontrado = miBanco.buscarCliente(buscarId);
                     if (encontrado != null) {
-                        System.out.println("🔍 Cliente encontrado: " + encontrado.getNombre());
+                        System.out.println(" Cliente encontrado: " + encontrado.getNombre());
                     } else {
-                        System.out.println("⚠️ No existe un cliente con ese ID.");
+                        System.out.println("️ No existe un cliente con ese ID.");
                     }
                     break;
                     
@@ -68,8 +68,8 @@ public class SistemaBancario {
                     sn.nextLine(); 
                     
                     System.out.println("\n¿Qué producto deseas abrir?");
-                    System.out.println("1. Cuenta Básica (Débito normal)");
-                    System.out.println("2. Cuenta de Inversión (Pagaré con rendimiento)");
+                    System.out.println("1. Cuenta Básica");
+                    System.out.println("2. Cuenta de Inversión");
                     System.out.println("3. Tarjeta de Crédito");
                     System.out.print("Elige una opción (1, 2 o 3): ");
                     int tipoProd = sn.nextInt();
@@ -94,7 +94,7 @@ public class SistemaBancario {
                             System.out.print("¿A cuántos días deseas invertir? (28/91/182): ");
                             int diasInv = sn.nextInt();
                             
-                            System.out.print("¿Qué cantidad deseas invertir? (Mínimo $100): $");
+                            System.out.print("¿Qué cantidad deseas invertir?");
                             double montoInv = sn.nextDouble();
                             sn.nextLine(); 
                             
@@ -103,7 +103,7 @@ public class SistemaBancario {
                             System.out.println(" POLÍTICA DEL BANCO: El cliente debe tener primero al menos una Cuenta Básica para fondear la inversión.");
                         }
                     } else if (tipoProd == 3) {
-                        System.out.print("¿Qué límite de crédito autorizará el banco? (Mínimo $1000): $");
+                        System.out.print("¿Qué límite de crédito autorizará el banco?");
                         double limite = sn.nextDouble();
                         sn.nextLine();
                         miBanco.abrirTarjetaCreditoACliente(idParaCuenta, limite);
@@ -144,7 +144,7 @@ public class SistemaBancario {
                         sn.nextLine(); 
                         miBanco.realizarRetiro(idRet, cuentaRet, montoRet);
                     } else {
-                        System.out.println("⚠️ Error: Cliente no encontrado.");
+                        System.out.println("️ Error: Cliente no encontrado.");
                     }
                     break;
 

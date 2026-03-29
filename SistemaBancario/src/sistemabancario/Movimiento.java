@@ -25,7 +25,6 @@ public class Movimiento {
         this.fechaHora = LocalDateTime.now(); // Captura el momento exacto en que se crea
     }
 
-    // Este método le da un formato bonito y legible al movimiento cuando lo imprimamos
     @Override
     public String toString() {
         DateTimeFormatter formato = DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm:ss");

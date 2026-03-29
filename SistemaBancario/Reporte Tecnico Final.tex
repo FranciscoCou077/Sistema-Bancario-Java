@@ -54,7 +54,7 @@
 		{\LARGE \textbf{Facultad de Ingeniería}}\\[1cm]
 		
 		{\Large Asignatura: Programación Orientada a Objetos}\\[0.5cm]
-		{\Large Proyecto: Sistema Bancario en Java}\\[1cm]
+		{\Large Proyecto: Sistema de Administración de Cuentas Bancarias en Java}\\[1cm]
 		
 		% Título del Reporte
 		\rule{\linewidth}{0.5mm} \\[0.4cm]
@@ -84,7 +84,8 @@
 	% --- SECCIÓN 1: INTRODUCCIÓN Y FLUJO DE TRABAJO ---
 	% =========================================================================
 	\section{Introducción}
-	El presente documento detalla la arquitectura algorítmica, las decisiones de diseño y el flujo de desarrollo del proyecto ``Sistema Bancario El Bienestar''. Este sistema fue codificado íntegramente en Java, aplicando los paradigmas de la Programación Orientada a Objetos (POO) \cite{oracle_oop} y haciendo uso intensivo de la librería \textit{Java Collections Framework} \cite{oracle_collections} para la gestión transaccional en memoria.
+	El presente documento detalla la arquitectura algorítmica, las decisiones de diseño y el flujo de desarrollo del proyecto ``Sistema Bancario''. Este sistema fue codificado íntegramente en Java, aplicando los paradigmas de la Programación Orientada a Objetos (POO) \cite{oracle_oop} y haciendo uso intensivo de la librería \textit{Java Collections Framework} \cite{oracle_collections} para
+	 la gestión transaccional en memoria.
 	
 	El objetivo fundamental de este proyecto fue modelar las entidades de un entorno financiero real, construyendo un motor de transacciones (Core Banking) capaz de gestionar identidades de clientes, cuentas de captación (débito), instrumentos de rendimiento (pagarés de inversión) y líneas de crédito. 
 	
@@ -105,9 +106,9 @@
 	Una de las características más fuertes de la ingeniería de este proyecto es la separación estricta entre el ID del Cliente y los números de cuenta. En sistemas novatos, es común que un usuario sea directamente "una cuenta". Nuestro sistema implementa la realidad bancaria bajo la cardinalidad 1:N:
 	
 	\begin{itemize}
-		\item \textbf{El ID de Cliente (Expediente Base):} Representa a la persona física. Es un número generado aleatoriamente (ej. 10000 a 99999). Sirve como llave de acceso privada interna para el banco (\texttt{GestorBanco}).
+		\item \textbf{El ID de Cliente (Expediente Base):} Representa a la persona física. Es un número generado aleatoriamente. Sirve como llave de acceso privada interna para el banco (\texttt{GestorBanco}).
 		\item \textbf{La Cuenta Básica (El Medio Líquido):} Es el producto principal de captación. Su número (ej. rango 100000 - 900000) es público para que terceros realicen depósitos.
-		\item \textbf{La Cuenta de Inversión (El Contrato Fijo):} Posee un número de folio completamente distinto (rango 500000+) porque legal y financieramente es un contrato a plazo fijo (28, 91 o 182 días), no una cuenta transaccional. Su separación permite que el dinero esté "congelado" y sujeto a cálculo de interés compuesto, sin mezclarse con el saldo disponible para compras diarias.
+		\item \textbf{La Cuenta de Inversión (El Contrato Fijo):} Posee un número de folio completamente distinto (rango 500000+) porque legal y financieramente es un contrato a plazo fijo (28, 91 o 182 días), no una cuenta transaccional. Su separación permite que el dinero esté congelado y sujeto a cálculo de interés compuesto, sin mezclarse con el saldo disponible para compras diarias.
 	\end{itemize}
 	Esta normalización de datos asegura que el banco pueda ofrecer escalabilidad: un solo cliente puede tener tres tarjetas de crédito y dos inversiones bajo un mismo paraguas de identidad.
 	
@@ -150,10 +151,10 @@
 		\item \textbf{Lógica destacada (\texttt{sn.nextLine();}):} Tras un método como \texttt{sn.nextInt()}, el carácter invisible \textit{Enter} queda flotando en el buffer del teclado. El sistema ejecuta repetidamente este comando de limpieza de buffer como técnica de programación defensiva para evitar que el escáner lance excepciones o salte menús.
 	\end{itemize}
 	
-	\subsection{2. Clase Controladora: \texttt{GestorBanco.java}}
+	\subsection{2. Clase Controladora: \texttt{GestorBanco.kjava}}
 	Es el cerebro operativo. Administra el directorio global y actúa de puente entre el mundo exterior (Main) y las entidades internas. 
 	\begin{itemize}
-		\item \textbf{Comentario Técnico del Código:} \texttt{// 2. Intentamos retirar el dinero. Si regresa 'true', es que sí tenía saldo}. Esta línea refleja la validación booleana. El gestor no manipula los saldos matemáticamente, delega esa responsabilidad (Encapsulamiento) al objeto \texttt{CuentaBasica}.
+		\item \textbf{Comentario Técnico del Código:} El gestor no manipula los saldos matemáticamente, delega esa responsabilidad (Encapsulamiento) al objeto \texttt{CuentaBasica}.
 	\end{itemize}
 	
 	\subsection{3. La Entidad Contenedora: \texttt{Cliente.java}}
@@ -165,7 +166,7 @@
 	\subsection{4. Productos Activos: \texttt{CuentaBasica.java} y \texttt{TarjetaCredito.java}}
 	Ambos extienden la lógica de retiros y depósitos, pero la tarjeta aplica validaciones de límite de endeudamiento (\texttt{deudaActual + monto <= limiteCredito}).
 	\begin{itemize}
-		\item \textbf{Comentario Técnico del Código:} \texttt{// 2. Guardamos el movimiento al principio de la lista (LIFO)}. Empleado justo después de alterar la variable \texttt{saldo}, garantizando que cada cambio de variable se acompañe atómicamente de un registro inmutable en el historial.
+		\item \textbf{Comentario Técnico del Código:} \texttt{// Guardamos el movimiento al principio de la lista (LIFO)}. Empleado justo después de alterar la variable \texttt{saldo}, garantizando que cada cambio de variable se acompañe atómicamente de un registro inmutable en el historial.
 	\end{itemize}
 	
 	\subsection{5. Producto a Plazo: \texttt{CuentaInversion.java}}
@@ -229,27 +230,30 @@
 	% --- SECCIÓN 7: CONCLUSIONES ---
 	% =========================================================================
 	\section{Conclusiones}
-	El desarrollo del ``Sistema Bancario El Bienestar'' es un caso de estudio exitoso en la aplicación del \textit{Collections Framework} y los algoritmos de validación asimétrica. Se comprobó que una correcta abstracción en la Programación Orientada a Objetos permite simular normativas financieras estrictas del mundo real. La transición documentada desde el diagrama UML preliminar hasta el modelo As-Built final demuestra un proceso iterativo maduro. El uso orquestado de estructuras de almacenamiento complejas, como \texttt{HashMap} y listas doblemente enlazadas, otorga al sistema un nivel de solidez computacional listo para su evaluación académica.
+	El desarrollo del ``Sistema Bancario'' es un caso de estudio exitoso en la aplicación del \textit{Collections Framework} y los algoritmos de validación asimétrica. Se comprobó que una correcta abstracción en la Programación Orientada a Objetos permite simular normativas financieras estrictas del mundo real. La transición documentada desde el diagrama UML preliminar hasta el modelo As-Built final demuestra un proceso iterativo maduro. El uso orquestado de estructuras de almacenamiento complejas, como \texttt{HashMap} y listas doblemente enlazadas, otorga al sistema un nivel de solidez computacional listo para su evaluación académica.
 	
 	% =========================================================================
 	% --- BIBLIOGRAFÍA ---
 	% =========================================================================
 	\newpage
 	\renewcommand{\refname}{Bibliografía}
-	\begin{thebibliography}{9}
-		
-		\bibitem{oracle_oop} 
-		Oracle. (s.f.). \textit{Lesson: Object-Oriented Programming Concepts}. The Java™ Tutorials. Recuperado de \url{https://docs.oracle.com/javase/tutorial/java/concepts/index.html}
-		
-		\bibitem{oracle_collections} 
-		Oracle. (s.f.). \textit{Lesson: Introduction to Collections}. The Java™ Tutorials. Recuperado de \url{https://docs.oracle.com/javase/tutorial/collections/intro/index.html}
-		
-		\bibitem{oracle_hashmap} 
-		Oracle. (s.f.). \textit{Class HashMap<K,V>}. Java Platform, Standard Edition 8 API Specification. Recuperado de \url{https://docs.oracle.com/javase/8/docs/api/java/util/HashMap.html}
-		
-		\bibitem{drawio_uml} 
-		draw.io. (s.f.). \textit{UML Class Diagrams}. draw.io blog. Recuperado de \url{https://www.drawio.com/blog/uml-class-diagrams}
-		
-	\end{thebibliography}
+\begin{thebibliography}{9}
+	
+	\bibitem{oracle_oop} 
+	Oracle. (s.f.). \textit{Lesson: Object-Oriented Programming Concepts}. The Java™ Tutorials. Recuperado de \url{https://docs.oracle.com/javase/tutorial/java/concepts/index.html}
+	
+	\bibitem{oracle_collections} 
+	Oracle. (s.f.). \textit{Lesson: Introduction to Collections}. The Java™ Tutorials. Recuperado de \url{https://docs.oracle.com/javase/tutorial/collections/intro/index.html}
+	
+	\bibitem{oracle_hashmap} 
+	Oracle. (s.f.). \textit{Class HashMap<K,V>}. Java Platform, Standard Edition 8 API Specification. Recuperado de \url{https://docs.oracle.com/javase/8/docs/api/java/util/HashMap.html}
+	
+	\bibitem{drawio_uml} 
+	draw.io. (s.f.). \textit{UML Class Diagrams}. draw.io blog. Recuperado de \url{https://www.drawio.com/blog/uml-class-diagrams}
+	
+	\bibitem{bell_parr_java}
+	Bell, D., \& Parr, M. (2003). \textit{Java para estudiantes} (3\textsuperscript{a} ed.). Pearson Educación.
+	
+\end{thebibliography}
 	
 \end{document}

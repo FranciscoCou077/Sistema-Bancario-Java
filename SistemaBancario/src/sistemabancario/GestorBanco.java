@@ -16,7 +16,7 @@ import java.util.Map;
 import java.util.Random;
 
 public class GestorBanco {
-    // El mapa ahora usa Integer en lugar de String como llave
+    // Correccion respecto a la primera version del codigo: El mapa ahora usa Integer en lugar de String como llave
     private Map<Integer, Cliente> directorioClientes;
     private Random generadorAleatorio;
 
@@ -25,7 +25,7 @@ public class GestorBanco {
         this.generadorAleatorio = new Random();
     }
 
-    // 2. Generación Automática de ID único (Ej: número entre 10000 y 99999)
+    // Generación Automática de ID único
     private int generarIdUnico() {
         int nuevoId;
         do {
@@ -35,7 +35,6 @@ public class GestorBanco {
         return nuevoId;
     }
 
-    // Ahora solo pedimos el nombre, el sistema se encarga del ID
     public void registrarCliente(String nombre) {
         int idAsignado = generarIdUnico();
         Cliente nuevoCliente = new Cliente(idAsignado, nombre);
@@ -47,7 +46,6 @@ public class GestorBanco {
         System.out.println("-> ID Asignado Automáticamente: " + idAsignado);
     }
 
-    // Búsqueda ahora recibe un int
     public Cliente buscarCliente(int numCliente) {
         return directorioClientes.get(numCliente);
     }
@@ -128,7 +126,7 @@ public class GestorBanco {
             System.out.println("️ Error: No se encontró ningún cliente con ese ID.");
         }
     }
-   // Método actualizado: Ahora resta el dinero de la cuenta básica primero
+ 
     public void abrirCuentaInversionACliente(int numCliente, int numCuentaOrigen, double monto, int plazo) {
         Cliente cliente = buscarCliente(numCliente);
         
@@ -136,16 +134,16 @@ public class GestorBanco {
             if (monto >= 100.0) {
                 if (plazo == 28 || plazo == 91 || plazo == 182) {
                     
-                    // 1. Buscamos la cuenta básica de donde va a salir el dinero
+                    // Buscamos la cuenta básica de donde va a salir el dinero
                     CuentaBasica cuentaOrigen = cliente.buscarCuenta(numCuentaOrigen);
                     
                     if (cuentaOrigen != null) {
                         System.out.println("\nProcesando transferencia de fondos para la inversión...");
                         
-                        // 2. Intentamos retirar el dinero. Si regresa 'true', es que sí tenía saldo
+                      
                         if (cuentaOrigen.retirar(monto)) {
                             
-                            // 3. Como ya le cobramos, ahora sí creamos su inversión
+                            
                             CuentaInversion nuevaInversion = new CuentaInversion(monto, plazo);
                             cliente.agregarInversion(nuevaInversion);
                             
@@ -154,7 +152,7 @@ public class GestorBanco {
                             nuevaInversion.calcularProyeccion();
                             
                         } else {
-                            // Si retirar() regresó false, el mismo método ya imprimió "Fondos insuficientes"
+                            
                             System.out.println(" Operación cancelada: No pudimos crear la inversión.");
                         }
                     } else {

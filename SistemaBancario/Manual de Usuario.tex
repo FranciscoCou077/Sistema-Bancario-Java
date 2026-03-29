@@ -1,0 +1,140 @@
+\documentclass[12pt, letterpaper]{article}
+
+% --- PAQUETES DE IDIOMA Y FORMATO ---
+\usepackage[utf8]{inputenc}
+\usepackage[spanish]{babel}
+\usepackage[margin=2.5cm]{geometry}
+\usepackage{graphicx} 
+\usepackage{hyperref} 
+\usepackage{xcolor}   
+\usepackage{booktabs} 
+\usepackage{tcolorbox} % Para las cajas de advertencia
+\usepackage{enumitem}
+
+% --- COLORES PERSONALIZADOS ---
+\definecolor{primary}{RGB}{0, 51, 102}
+\definecolor{warningred}{RGB}{204, 0, 0}
+\definecolor{lightgray}{RGB}{240, 240, 240}
+
+% --- INICIO DEL DOCUMENTO ---
+\begin{document}
+	
+	% --- PORTADA ---
+	\begin{titlepage}
+		\centering
+		\vspace*{1cm}
+		
+		{\Huge \textbf{Sistema Bancario}}\\[1.5cm]
+		
+		\rule{\linewidth}{0.5mm} \\[0.5cm]
+		{ \huge \bfseries Manual de Usuario y \\ Guía Operativa de Consola }\\[0.4cm]
+		\rule{\linewidth}{0.5mm} \\[2cm]
+		
+		{\Large \textbf{Versión del Software:} 1.0 (Core Banking)}\\[1cm]
+		
+		\begin{flushleft}
+			\large \textbf{Desarrollado por:}\\
+			Francisco José Coutiño Morales\\
+			Ernesto Flamenco Villaseñor\\
+			Jaime Erick Torres Nava
+		\end{flushleft}
+		
+		\vfill
+		
+		{\large \textbf{Facultad de Ingeniería, UNAM}}\\[0.2cm]
+		{\normalsize \today}
+	\end{titlepage}
+	
+	% --- ÍNDICE ---
+	\newpage
+	\tableofcontents
+	\newpage
+	
+	% =========================================================================
+	\section{Introducción}
+	% =========================================================================
+	Bienvenido al Manual de Usuario del \textbf{Sistema Bancario}. Este software ha sido diseñado bajo una arquitectura de consola (CLI) para gestionar operaciones financieras en tiempo real de manera ágil y segura. 
+	
+	Este manual está dirigido a los operadores de ventanilla y ejecutivos de cuenta; y al profesor de la asignatura Edgar Tista proporcionando las instrucciones paso a paso para la correcta interacción con el sistema, así como las advertencias de seguridad necesarias para evitar el cierre inesperado del programa debido a entradas de datos inválidas.
+	
+	% =========================================================================
+	\section{Conceptos Clave del Sistema}
+	% =========================================================================
+	Para operar el sistema correctamente, el usuario debe comprender cómo el software clasifica y separa la información. A diferencia de otros sistemas informales, este motor bancario separa estrictamente la identidad del usuario de sus productos financieros:
+	
+	\begin{itemize}
+		\item \textbf{ID de Cliente (Ej. 45892):} Es un número de 5 dígitos generado \textit{automáticamente} por el sistema. Representa el expediente físico de la persona. \textbf{El operador utilizará este ID para buscar al cliente y autorizar cualquier trámite.}
+		\item \textbf{Cuenta Básica (Ej. 104599):} Es el producto de débito del cliente. Su número es de 6 dígitos.
+		\item \textbf{Cuenta de Inversión (Ej. 509384):} Es un contrato a plazo fijo. El sistema le asigna números en la serie de los 500,000 para diferenciarla visualmente de las cuentas de débito.
+		\item \textbf{Tarjeta de Crédito (Ej. 408211):} Producto de financiamiento. Al igual que las otras cuentas, un solo ID de cliente puede tener múltiples tarjetas asignadas.
+	\end{itemize}
+	
+	% =========================================================================
+	\section{Guía de Operación: Menú Principal}
+	% =========================================================================
+	Al iniciar la ejecución, el sistema desplegará un menú interactivo del 1 al 10. El operador debe escribir \textbf{únicamente el número} de la opción deseada y presionar \texttt{Enter}.
+	
+	\subsection{Registro y Búsqueda de Clientes (Opciones 1, 2 y 3)}
+	\begin{itemize}
+		\item \textbf{[Opción 1] Registrar Nuevo Cliente:} El sistema solicitará un nombre. Escriba el nombre completo y presione Enter. El sistema le devolverá el \textbf{ID Asignado Automáticamente}. \textit{Nota: Anote este ID, ya que se requerirá para el resto de operaciones.}
+		\item \textbf{[Opción 2] Buscar Cliente:} Permite verificar si un ID está registrado antes de iniciar un trámite.
+		\item \textbf{[Opción 3] Ver todos los clientes:} Imprime en pantalla el directorio completo de IDs y Nombres registrados en la memoria actual.
+	\end{itemize}
+	
+	\subsection{Apertura de Productos (Opción 4)}
+	Al seleccionar la Opción 4, el sistema pedirá el ID del cliente. Posteriormente, abrirá un submenú para elegir el producto:
+	\begin{enumerate}
+		\item \textbf{Cuenta Básica:} Se genera instantáneamente con saldo de \$0.00.
+		\item \textbf{Cuenta de Inversión:} \textbf{Regla de negocio estricta.} El cliente \textit{debe} tener una cuenta básica primero. El sistema preguntará de qué cuenta básica se descontará el dinero. Luego pedirá el plazo (solo se acepta 28, 91 o 182) y el monto (mínimo \$100).
+		\item \textbf{Tarjeta de Crédito:} Solo requiere ingresar el límite de crédito aprobado (mínimo \$1000).
+	\end{enumerate}
+	
+	\subsection{Transacciones y Auditoría (Opciones 5, 6 y 7)}
+	\begin{itemize}
+		\item \textbf{[5] Depositar y [6] Retirar:} El sistema solicitará el ID del cliente, el Número de la Cuenta Básica a afectar y el monto fraccionario (ej. \texttt{500.50}). El sistema bloqueará automáticamente retiros que superen el saldo disponible.
+		\item \textbf{[7] Ver Estado de Cuenta:} Imprime el historial de movimientos de una cuenta básica. El sistema utiliza una estructura LIFO, lo que significa que \textbf{la transacción más reciente siempre aparecerá en la parte superior} del reporte, detallando la fecha y hora exacta del movimiento.
+	\end{itemize}
+	
+	\subsection{Liquidación y Crédito (Opciones 8 y 9)}
+	\begin{itemize}
+		\item \textbf{[8] Liquidar Inversión:} Requiere el ID, el número del contrato de inversión a cerrar, y el número de la Cuenta Básica destino. El sistema calculará la tasa de interés, depositará el total en la cuenta básica y eliminará permanentemente el contrato de inversión del sistema.
+		\item \textbf{[9] Operaciones con TDC:} Permite registrar una Compra (aumenta la deuda validando el límite) o "Pagar la Deuda". \textbf{Nota:} Para pagar, el sistema descontará obligatoriamente el dinero de una de las Cuentas Básicas del cliente (prevención de dinero fantasma).
+	\end{itemize}
+	
+	% =========================================================================
+	\section{Advertencias Críticas y Prevención de Fallos}
+	% =========================================================================
+	El sistema cuenta con validaciones lógicas robustas; sin embargo, al ser una interfaz de consola (CLI), existen vulnerabilidades de entrada que el operador debe conocer para evitar el colapso repentino del programa (\textit{Crash}).
+	
+	\begin{tcolorbox}[colback=lightgray, colframe=warningred, title=\textbf{1. ERROR FATAL: Ingreso de Letras por Números (\texttt{InputMismatchException})}]
+		La causa principal por la que el programa finalizará abruptamente mostrando texto rojo en la consola es el ingreso de caracteres alfabéticos cuando el sistema espera datos numéricos. 
+		\begin{itemize}
+			\item \textbf{Menús y IDs:} Todos los menús (1-10) y las peticiones de ID o Números de Cuenta \textbf{solo aceptan números enteros}. Introducir símbolos o letras (ej. escribir "Uno" en lugar de "1") cerrará el programa inmediatamente, perdiendo todos los datos en memoria.
+			\item \textbf{Manejo de Montos:} Al ingresar cantidades de dinero, puede usar decimales (ej. \texttt{150.50}), pero jamás incluya el símbolo de moneda (\texttt{\$}) ni comas (\texttt{,}).
+		\end{itemize}
+	\end{tcolorbox}
+	
+	\begin{tcolorbox}[colback=lightgray, colframe=primary, title=\textbf{2. ADVERTENCIA LÓGICA: Política de ''Cero Dinero Fantasma''}]
+		El sistema está programado para evitar la inyección de capital sin respaldo. 
+		\begin{itemize}
+			\item Usted \textbf{no puede} abrir una cuenta de inversión si el cliente no tiene dinero suficiente en su cuenta básica para fondearla. El sistema cancelará la operación.
+			\item Usted \textbf{no puede} abonar al pago de una tarjeta de crédito introduciendo efectivo directamente. El dinero debe depositarse primero en la Cuenta Básica del cliente, y desde el menú de la tarjeta, indicar de qué cuenta se debitará el pago.
+		\end{itemize}
+	\end{tcolorbox}
+	
+	\subsection{Restricciones de Valores No Válidos}
+	El programa no fallará, pero \textbf{bloqueará y cancelará la operación} mostrando un mensaje de error si el operador intenta:
+	\begin{itemize}
+		\item Retirar o depositar cantidades negativas (ej. \texttt{-500}).
+		\item Invertir a un plazo distinto a 28, 91 o 182 días.
+		\item Abrir una inversión por menos de \$100.00 MXN.
+		\item Autorizar una Tarjeta de Crédito con un límite menor a \$1000.00 MXN.
+		\item Operar sobre un número de cuenta que no pertenezca al ID del cliente ingresado previamente (protección de fondos cruzados).
+	\end{itemize}
+	
+	\vspace{1cm}
+	\begin{center}
+		\textit{Para cerrar el sistema de manera segura y no dejar procesos abiertos, seleccione siempre la Opción 10 ("Salir") en el Menú Principal.}
+	\end{center}
+	
+\end{document}
