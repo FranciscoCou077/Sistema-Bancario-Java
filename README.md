@@ -43,6 +43,21 @@ Proyecto desarrollado para la asignatura de Programación Orientada a Objetos de
 * **Jaime Erick Torres Nava** - [Su GitHub](https://github.com/Jaimetn19)
 ## Instalación y Uso (Para Desarrolladores)
 
-1. Clonar este repositorio en tu máquina local:
+## Instalación y Ejecución
+
+Para ejecutar este proyecto en tu entorno local:
+
+1. Clona este repositorio:
    ```bash
-   git clone https://github.com/FranciscoCou077/Sistema-Bancario-Java.git
+   git clone [https://github.com/TuUsuario/Sistema-Bancario-Java.git](https://github.com/TuUsuario/Sistema-Bancario-Java.git)
+
+Abre el proyecto en tu IDE preferido (se recomienda Apache NetBeans).
+
+Asegúrate de tener instalado el JDK 8 o superior.
+
+Compila y ejecuta el archivo principal SistemaBancario.java ubicado en src/sistemabancario/.
+## Arquitectura del Sistema
+
+El sistema fue diseñado siguiendo los principios de la Programación Orientada a Objetos (POO), asegurando un bajo acoplamiento y una alta cohesión entre el gestor del banco y las entidades financieras.
+
+![Diagrama UML Final](Diagrama_UML_SistemaBancarioFinal.jpg)
