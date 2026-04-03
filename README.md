@@ -60,4 +60,4 @@ Compila y ejecuta el archivo principal SistemaBancario.java ubicado en src/siste
 
 El sistema fue diseñado siguiendo los principios de la Programación Orientada a Objetos (POO), asegurando un bajo acoplamiento y una alta cohesión entre el gestor del banco y las entidades financieras.
 
-![Diagrama UML Final](Diagrama_UML_SistemaBancarioFinal.jpg)
+![Diagrama UML Final](docs/Diagrama_UML_SistemaBancarioFinal.jpg)
