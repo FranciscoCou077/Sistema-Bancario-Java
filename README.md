@@ -18,7 +18,7 @@ El sistema está diseñado en capas (separando la lógica de negocio de la inter
 - **Historial Transaccional:** Registro inmutable y cronológico de cada movimiento (depósitos, retiros, apertura de inversiones).
 - **Módulo de Crédito (Feature Extra):** Gestión de tarjetas de crédito con control de límite y saldo deudor.
 
-## Arquitectura y Estructuras de Datos (Collections)
+## Estructuras de Datos (Collections)
 
 Para garantizar la integridad y eficiencia de los datos, el modelo de negocio implementa las siguientes estructuras:
 
